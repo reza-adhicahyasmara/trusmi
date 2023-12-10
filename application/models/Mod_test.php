@@ -22,13 +22,13 @@ class Mod_test extends CI_Model {
     }
 
     function grafik_kpi_aktual(){
-        $this->db->select('SUM(CASE WHEN aktual < deadline THEN 1 ELSE 0 END) AS jumlah_aktual_lebih_kecil,
-                            COUNT(*) AS total_tasklist,
-                            (SUM(CASE WHEN aktual < deadline THEN 1 ELSE 0 END) / COUNT(*)) * 100 AS persentase,
-                            kpi_marketing.*,');
+        $this->db->select('(SUM(CASE WHEN aktual < deadline AND kpi_marketing.kpi = "Sales" THEN 1 ELSE 0 END)) * bobot_kpi.bobot /2 AS persentase1,
+                            (SUM(CASE WHEN aktual < deadline AND kpi_marketing.kpi = "Report" THEN 1 ELSE 0 END)) * bobot_kpi.bobot / 2 AS persentase2,
+                            kpi_marketing.*
+                        ');
         $this->db->from('kpi_marketing');
         $this->db->join('bobot_kpi', 'bobot_kpi.kpi = kpi_marketing.kpi');
-        $this->db->group_by('karyawan');
+        $this->db->group_by('kpi_marketing.karyawan');
         return $this->db->get();
     }
 }

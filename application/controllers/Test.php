@@ -20,7 +20,7 @@ class Test extends CI_Controller {
 
         foreach($this->Mod_test->grafik_kpi_aktual()->result() as $row){
             $gr_nama[] = $row->karyawan;
-            $gr_persen[] = number_format($row->persentase, 2, ".", ".");
+            $gr_persen[] = number_format($row->persentase1+$row->persentase2, 2, ".", ".");
         }
         $data['gr_nama'] = json_encode($gr_nama);
         $data['gr_persen'] = json_encode($gr_persen);
